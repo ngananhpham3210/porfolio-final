@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="swing">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seasonal Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- BACKGROUND CONTAINER -->
+    <div id="bg-container">
+        <div id="prop-1" class="giant-prop">🌸</div>
+        <div id="prop-2" class="giant-prop">🎀</div>
+        <div id="prop-3" class="giant-prop">🍡</div>
+    </div>
+
+    <!-- AUDIO ELEMENTS -->
+    <audio id="bgm-swing" loop src="swing.mp3"></audio>
+    <audio id="bgm-summer" loop src="summer.mp3"></audio>
+    <audio id="bgm-autumn" loop src="autumn.mp3"></audio>
+    <audio id="bgm-winter" loop src="winter.mp3"></audio>
+
+    <div class="container">
+        
+        <div class="sidebar-wrapper">
+            <!-- Main Navigation Sidebar -->
+            <aside class="sidebar">
+                <div class="brand-box">Portfolio_24 ✨</div>
+                
+                <nav class="nav-group">
+                    <div class="nav-item-wrapper">
+                        <button class="nav-btn" onclick="toggleAccordion('overview-list', this)" id="btn-overview">
+                            <span class="plus-badge">+</span>
+                            <span>Overview</span>
+                        </button>
+                        <div class="accordion-content" id="overview-list">
+                            <button onclick="showView('course', this)" class="sub-link active">Introduction</button>
+                            <button onclick="showView('about', this)" class="sub-link">About Me</button>
+                        </div>
+                    </div>
+
+                    <div class="nav-item-wrapper">
+                        <button class="nav-btn" onclick="toggleAccordion('projects-list', this)" id="btn-projects">
+                            <span class="plus-badge">+</span>
+                            <span>Projects</span>
+                        </button>
+                        <div class="accordion-content" id="projects-list">
+                            <button onclick="showProject(1, this)" class="sub-link">01. File Mgmt</button>
+                            <button onclick="showProject(2, this)" class="sub-link">02. Research</button>
+                            <button onclick="showProject(3, this)" class="sub-link">03. Prompt Eng</button>
+                            <button onclick="showProject(4, this)" class="sub-link">04. Collab Tools</button>
+                            <button onclick="showProject(5, this)" class="sub-link">05. AI Content</button>
+                            <button onclick="showProject(6, this)" class="sub-link">06. AI Ethics</button>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Settings Sidebar (Now Collapsible) -->
+            <aside class="settings-sidebar">
+                <button class="nav-btn" onclick="toggleAccordion('settings-content-wrapper', this)" id="btn-settings">
+                    <span class="plus-badge">+</span>
+                    <span style="font-family: 'Space Mono', monospace; font-size: 16px;">Settings</span>
+                </button>
+
+                <div class="accordion-content" id="settings-content-wrapper">
+                    <div class="settings-content">
+                        <div class="setting-row">
+                            <span class="label-text">Theme</span>
+                            <div class="theme-radios">
+                                <input type="radio" id="theme-swing" name="theme-choice" value="swing" checked><label for="theme-swing">🌸</label>
+                                <input type="radio" id="theme-summer" name="theme-choice" value="summer"><label for="theme-summer">🌻</label>
+                                <input type="radio" id="theme-autumn" name="theme-choice" value="autumn"><label for="theme-autumn">🍂</label>
+                                <input type="radio" id="theme-winter" name="theme-choice" value="winter"><label for="theme-winter">☃️</label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <span class="label-text">Play Music</span>
+                            <label class="switch">
+                                <input type="checkbox" id="musicToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-row">
+                            <span class="label-text">Falling Icons</span>
+                            <label class="switch">
+                                <input type="checkbox" id="fallingToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                         <div class="setting-row">
+                            <span class="label-text">Static Icons</span>
+                            <label class="switch">
+                                <input type="checkbox" id="staticToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-row">
+                            <span class="label-text">Fall Speed</span>
+                            <input type="range" min="10" max="50" value="25" id="speedSlider">
+                        </div>
+                        <button class="btn-reset" id="resetBtn">Reset Settings</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <main>
+            <!-- UNIFIED HEADER -->
+            <div class="unified-header">
+                <div class="header-top-row">
+                    <div class="breadcrumbs" id="breadcrumbContainer">
+                        <span class="crumb-item">Home</span>
+                        <span class="crumb-separator">/</span>
+                        <span class="crumb-item">Overview</span>
+                        <span class="crumb-separator">/</span>
+                        <span class="crumb-active" id="crumbActive">Introduction</span>
+                    </div>
+
+                    <div class="meta-group">
+                        <div class="time-badge">
+                            <span>📅</span><span id="dateDisplay">01-01-2025</span>
+                        </div>
+                        <div class="time-badge">
+                            <span>⏰</span><span id="clockDisplay">12:00:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-main-row">
+                    <div>
+                        <h1 id="pageTitle">Course Syllabus</h1>
+                        <div class="subtitle" id="pageSub">CS300: Advanced Web Development</div>
+                    </div>
+                    <!-- UPDATED: Now an IMG tag instead of a DIV text -->
+                    <img id="themeIconDisplay" src="https://github.com/ngananhpham3210/image/blob/main/seasons/spring.png?raw=true" alt="Theme Icon">
+                </div>
+            </div>
+
+            <!-- CONTENT SECTIONS -->
+            <div class="view-section active" id="courseView">
+                <div class="card">
+                    <h3>Introduction</h3>
+                    <p>Welcome to my Fall 2024 portfolio! This collection demonstrates proficiency in full-stack architecture, focusing on the transition from static content to dynamic, data-driven applications.</p>
+                    <div class="stats-grid">
+                        <div class="stat-item"><span class="stat-num">4</span><span class="stat-label">Projects</span></div>
+                        <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label">Completed</span></div>
+                        <div class="stat-item"><span class="stat-num">A</span><span class="stat-label">Grade</span></div>
+                        <div class="stat-item"><span class="stat-num">120h</span><span class="stat-label">Coded</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Learning Objectives</h3>
+                    <ul>
+                        <li>Master modern JavaScript (ES6+) and asynchronous patterns.</li>
+                        <li>Design scalable REST APIs using Node.js and Express.</li>
+                        <li>Implement real-time data flow using WebSockets.</li>
+                        <li>Deploy applications utilizing Docker and AWS.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- PROJECT 1: FILE MANAGEMENT -->
+            <div class="view-section" id="project1">
+                <div class="card">
+                    <h3>Bài tập 1: Quản lý tập tin và thư mục cá nhân</h3>
+                    
+                    <div class="project-meta-box">
+                        <div class="meta-row">
+                            <span class="meta-label">🎯 Objective:</span>
+                            <span>Design and implement a hierarchical directory structure and naming convention system to ensure immediate data retrieval (within 3 clicks) and prevent file duplication across academic semesters.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">📄 Evidence:</span>
+                            <a href="#" class="ref-link">View Detailed Structure PDF (Page 7)</a>
+                        </div>
+                    </div>
+
+                    <span class="content-heading">1. Tư duy thiết kế cấu trúc thư mục</span>
+                    <p>Để tối ưu hóa quy trình học tập, tôi tổ chức thư mục theo cấu trúc phân tầng: <strong>Năm học > Học kỳ > Môn học > Loại tài liệu (Lý thuyết/Bài tập)</strong>.</p>
+                    <p>Cách sắp xếp này giúp tôi đạt được hai mục tiêu:</p>
+                    <ul>
+                        <li><strong>Truy xuất nhanh:</strong> Tìm được dữ liệu cần thiết chỉ trong 3 cú nhấp chuột.</li>
+                        <li><strong>Tránh nhầm lẫn:</strong> Phân loại rõ ràng tài liệu giữa các môn học khác nhau.</li>
+                    </ul>
+
+                    <span class="content-heading">2. Quy tắc đặt tên tập tin (Naming Convention)</span>
+                    <p>Tôi áp dụng quy tắc đặt tên <strong>Snake_case</strong> (sử dụng dấu gạch dưới) hoặc <strong>CamelCase</strong> và tuân thủ nguyên tắc <strong>không dấu tiếng Việt</strong>.</p>
+                    <ul>
+                        <li><strong>Cấu trúc chuẩn:</strong> <span class="code-block">[TênMôn]_[LoạiTàiLiệu]_[NgàyTháng]</span></li>
+                        <li><strong>Ví dụ:</strong> <span class="code-block">NMCNTT_BaiTap1_2024.pdf</span></li>
+                    </ul>
+                    <p>Quy tắc này giúp tránh lỗi font chữ khi chia sẻ file qua email/Zalo và hỗ trợ công cụ tìm kiếm trên máy tính hoạt động hiệu quả hơn.</p>
+
+                    <span class="content-heading">3. Hình ảnh minh họa cấu trúc</span>
+                    <div class="img-placeholder">
+                        <span style="font-size: 50px; margin-bottom: 15px;">📂</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">IMAGE FROM PAGE 7</span>
+                        <span style="font-family: 'Space Mono'; opacity: 0.6; font-size: 12px; margin-top: 5px;">Dai_hoc > Nam_1 > Hoc_ky_1...</span>
+                    </div>
+
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-primary">View Full PDF</a>
+                        <a href="#" class="btn btn-secondary">Download</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECT 2: ACADEMIC RESEARCH -->
+            <div class="view-section" id="project2">
+                <div class="card">
+                    <h3>Bài tập 2: Tìm kiếm và đánh giá thông tin học thuật</h3>
+
+                    <div class="project-meta-box">
+                        <div class="meta-row">
+                            <span class="meta-label">🎯 Objective:</span>
+                            <span>Apply advanced Google search operators (Boolean logic, filetype filtering) to locate peer-reviewed academic sources and evaluate their credibility for inclusion in legal research papers.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">📄 Evidence:</span>
+                            <a href="#" class="ref-link">View Research Report PDF</a>
+                        </div>
+                    </div>
+
+                    <span class="content-heading">1. Chủ đề và Chiến lược tìm kiếm</span>
+                    <p>Tôi đã thực hiện tìm kiếm tài liệu chuyên sâu về chủ đề: <strong>"Khung pháp lý về Hợp đồng thông minh (Smart Contracts)"</strong>.</p>
+                    <p>Để lọc bỏ thông tin nhiễu và tìm các nguồn uy tín, tôi đã sử dụng các cú pháp nâng cao sau:</p>
+                    <ul>
+                        <li>Tìm tài liệu giáo dục: <span class="code-block">"smart contract" legal framework site:edu</span> (Chỉ tìm trên tên miền các trường đại học).</li>
+                        <li>Tìm báo cáo chính phủ: <span class="code-block">"hợp đồng thông minh" filetype:pdf site:gov</span> (Tìm file PDF trên trang chính phủ).</li>
+                        <li>Tìm trên cơ sở dữ liệu chuyên ngành: <span class="code-block">intitle:"smart contract" "legal issues" SSRN</span>.</li>
+                    </ul>
+
+                    <span class="content-heading">2. Minh chứng kết quả</span>
+                    <p>Dưới đây là kết quả tìm kiếm hiển thị các nguồn từ Harvard và Stanford, loại bỏ hoàn toàn các trang tin tức thông thường.</p>
+                    <div class="img-placeholder">
+                        <span style="font-size: 50px; margin-bottom: 15px;">🔍</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">GOOGLE SEARCH RESULTS</span>
+                        <span style="font-family: 'Space Mono'; opacity: 0.6; font-size: 12px; margin-top: 5px;">site:edu "smart contract" results...</span>
+                    </div>
+
+                    <span class="content-heading">3. Đánh giá độ tin cậy và Kết luận</span>
+                    <p>Tôi ưu tiên lựa chọn tài liệu từ các nhà xuất bản đại học danh tiếng (Harvard, Oxford) và các báo cáo chính thức của Nghị viện Châu Âu.</p>
+                    <ul>
+                        <li><strong>Lý do:</strong> Đây là những nguồn đã qua bình duyệt (peer-reviewed), đảm bảo tính pháp lý và độ chính xác cao nhất.</li>
+                        <li><strong>Hiệu quả:</strong> Việc sử dụng Google Scholar và các cú pháp <span class="code-block">site:</span>, <span class="code-block">filetype:</span> giúp tôi loại bỏ các thông tin không chính thống, từ đó xây dựng được nền tảng lý luận vững chắc cho chuyên ngành Luật.</li>
+                    </ul>
+
+                    <div class="img-placeholder" style="height: 150px; margin-top: 20px;">
+                        <span style="font-size: 40px; margin-bottom: 10px;">📊</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">COMPARISON TABLE</span>
+                        <span style="font-family: 'Space Mono'; opacity: 0.6; font-size: 12px;">(Optional Evidence)</span>
+                    </div>
+
+                     <div class="btn-group">
+                        <a href="#" class="btn btn-primary">View Report</a>
+                        <a href="#" class="btn btn-secondary">Source List</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECT 3: PROMPT ENGINEERING -->
+            <div class="view-section" id="project3">
+                <div class="card">
+                    <h3>Bài tập 3: Kỹ thuật Prompt Engineering trong học tập</h3>
+                    
+                    <div class="project-meta-box">
+                        <div class="meta-row">
+                            <span class="meta-label">🎯 Objective:</span>
+                            <span>Conduct a comparative analysis of prompt engineering techniques (Zero-shot vs. Chain-of-Thought vs. Role-playing) to optimize AI responses for complex academic concept explanation and summarization.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">📄 Evidence:</span>
+                            <a href="#" class="ref-link">View Experiment Logs PDF</a>
+                        </div>
+                    </div>
+
+                    <span class="content-heading">1. Mục tiêu và Phương pháp</span>
+                    <p>Tôi đã thực hiện thí nghiệm so sánh hiệu quả của các câu lệnh (Prompt) ở 3 cấp độ: <em>Cơ bản, Cải tiến và Nâng cao</em> trên công cụ ChatGPT/Gemini.</p>
+                    <p>Mục tiêu là tìm ra công thức tối ưu cho các tác vụ: Tóm tắt tài liệu, Giải thích khái niệm và Tạo đề ôn tập.</p>
+
+                    <span class="content-heading">2. Điển hình nghiên cứu (Case Study): Giải thích khái niệm phức tạp</span>
+                    <p>Tôi đã thử nghiệm việc yêu cầu AI giải thích khái niệm <strong>"Nghĩa vụ ủy thác"</strong> trong ngành Luật.</p>
+
+                    <ul>
+                        <li>
+                            <strong>Prompt Cơ bản:</strong> <span class="code-block">"Giải thích khái niệm Nghĩa vụ ủy thác là gì."</span>
+                            <br><em>Kết quả:</em> AI đưa ra định nghĩa khô khan, hàn lâm và khó hiểu cho người mới bắt đầu.
+                            <div class="img-placeholder" style="height: 120px; margin-top: 10px;">
+                                <span style="font-size: 30px;">🤖</span>
+                                <span style="font-family: 'Space Mono'; font-size: 12px;">Basic Result Screenshot</span>
+                            </div>
+                        </li>
+                        <li style="margin-top: 20px;">
+                            <strong>Prompt Nâng cao (Áp dụng Role Prompting & Analogy):</strong>
+                            <br><em>Cấu trúc:</em> Gán vai trò (Sinh viên Luật) + Đối tượng nghe (Sinh viên năm nhất) + Yêu cầu bắt buộc (So sánh đời sống).
+                            <br><em>Kết quả:</em> AI giải thích chính xác, sử dụng hình ảnh so sánh "Bác sĩ và Bệnh nhân" giúp khái niệm trở nên trực quan.
+                            <div class="img-placeholder" style="height: 120px; margin-top: 10px;">
+                                <span style="font-size: 30px;">🧠</span>
+                                <span style="font-family: 'Space Mono'; font-size: 12px;">Advanced Result Screenshot</span>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <span class="content-heading">3. Phân tích hiệu quả</span>
+                    <p>Sau khi thử nghiệm trên 3 tác vụ khác nhau, tôi rút ra kết luận: Hiệu quả của Prompt không nằm ở độ dài, mà nằm ở <strong>Ngữ cảnh (Context)</strong> và <strong>Ràng buộc (Constraints)</strong>.</p>
+                    <ul>
+                        <li><strong>Kỹ thuật Role Prompting:</strong> Việc gán vai trò <em>"Trợ lý nghiên cứu"</em> giúp kiểm soát giọng văn chuyên nghiệp và tăng độ tin cậy.</li>
+                        <li><strong>Kỹ thuật Chain-of-Thought (CoT):</strong> Khi yêu cầu AI <em>"lên danh sách chủ đề phụ trước khi đặt câu hỏi"</em>, kết quả đầu ra có tính hệ thống cao hơn.</li>
+                    </ul>
+
+                    <span class="content-heading">4. Bộ quy tắc Prompt cá nhân</span>
+                    <p>Từ quá trình nghiên cứu, tôi đúc kết 4 nguyên tắc cốt lõi để sử dụng AI hiệu quả trong học tập:</p>
+                    
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nguyên tắc</th>
+                                <th>Kỹ thuật áp dụng</th>
+                                <th>Tác dụng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Gán vai trò</strong></td>
+                                <td>Role Prompting</td>
+                                <td>Điều chỉnh giọng văn và độ sâu chuyên môn.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Yêu cầu suy luận</strong></td>
+                                <td>Chain-of-Thought</td>
+                                <td>Giúp AI tư duy logic từng bước, tránh bỏ sót ý.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Định rõ đầu ra</strong></td>
+                                <td>Format Constraints</td>
+                                <td>Yêu cầu trả về dạng Bảng, Danh sách hoặc giới hạn từ.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ràng buộc cụ thể</strong></td>
+                                <td>Analogies</td>
+                                <td>Bắt buộc sử dụng ví dụ so sánh để dễ hiểu hơn.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="img-placeholder" style="height: 150px; margin-top: 25px;">
+                        <span style="font-size: 40px; margin-bottom: 10px;">📝</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">OPTIONAL: QUIZ TABLE EVIDENCE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECT 4: COLLABORATION TOOLS -->
+            <div class="view-section" id="project4">
+                <div class="card">
+                    <h3>Bài tập 4: Kỹ năng Hợp tác và Quản lý dự án số</h3>
+
+                    <div class="project-meta-box">
+                        <div class="meta-row">
+                            <span class="meta-label">🎯 Objective:</span>
+                            <span>Establish a digital ecosystem using Trello for Kanban-style task management and Google Workspace for real-time document collaboration to resolve version control conflicts in group projects.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">📄 Evidence:</span>
+                            <a href="#" class="ref-link">View Project Management Report PDF</a>
+                        </div>
+                    </div>
+
+                    <span class="content-heading">1. Tổng quan dự án</span>
+                    <p>Tôi đã ứng dụng các công cụ kỹ thuật số để quản lý dự án nhóm: <strong>"Lập kế hoạch tổ chức hội thảo AI & Pháp luật"</strong>.</p>
+                    <p>Bộ công cụ được tích hợp bao gồm:</p>
+                    <ul>
+                        <li><strong>Trello:</strong> Quản lý tiến độ theo phương pháp Kanban (Cần làm - Đang làm - Đã xong).</li>
+                        <li><strong>Google Drive/Docs:</strong> Lưu trữ tài nguyên và soạn thảo văn bản cộng tác theo thời gian thực.</li>
+                    </ul>
+
+                    <span class="content-heading">2. Không gian làm việc trực tuyến (Minh chứng)</span>
+                    
+                    <p><strong>a. Quản lý tác vụ trên Trello:</strong><br>Mỗi thẻ nhiệm vụ (Card) đều được gán thành viên chịu trách nhiệm, hạn chót (Deadline) và liên kết trực tiếp đến file tài liệu tương ứng.</p>
+                    <div class="img-placeholder" style="height: 180px;">
+                        <span style="font-size: 40px; margin-bottom: 10px;">📋</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">TRELLO BOARD SNAPSHOT</span>
+                        <span style="font-family: 'Space Mono'; opacity: 0.6; font-size: 12px;">(To Do / Doing / Done columns)</span>
+                    </div>
+
+                    <p style="margin-top: 30px;"><strong>b. Tổ chức tài nguyên trên Google Drive:</strong><br>Hệ thống thư mục được phân tầng logic (Tài liệu nghiên cứu > Bản thảo > Media), đảm bảo mọi thành viên đều truy cập đúng dữ liệu cần thiết.</p>
+                    <div class="img-placeholder" style="height: 180px;">
+                        <span style="font-size: 40px; margin-bottom: 10px;">☁️</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">GOOGLE DRIVE STRUCTURE</span>
+                        <span style="font-family: 'Space Mono'; opacity: 0.6; font-size: 12px;">(Research > Drafts > Media)</span>
+                    </div>
+
+                    <span class="content-heading">3. Giải quyết vấn đề trong quá trình hợp tác</span>
+                    <p>Trong quá trình làm việc nhóm, chúng tôi đã gặp một số thách thức và đã áp dụng giải pháp công nghệ để khắc phục:</p>
+                    
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Thách thức</th>
+                                <th>Giải pháp áp dụng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Xung đột phiên bản</strong><br>(Hai người sửa cùng lúc)</td>
+                                <td>Áp dụng quy tắc "Quyền sở hữu phần" và sử dụng chế độ <em>Gợi ý (Suggesting)</em> thay vì sửa trực tiếp.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Trôi thông tin</strong><br>(Quá nhiều thông báo)</td>
+                                <td>Tắt thông báo email mặc định, chỉ nhận thông báo khi được gắn thẻ (@tag) trực tiếp trên Trello.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Quên cập nhật tiến độ</strong></td>
+                                <td>Thiết lập quy trình "Stand-up Virtual": Họp nhanh 5 phút cuối ngày qua Zalo để cập nhật trạng thái thẻ.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <span class="content-heading">4. Kết luận</span>
+                    <p>Việc tích hợp Trello và Google Workspace giúp giảm thiểu 80% thời gian chết do việc tìm kiếm tài liệu và hỏi lại thông tin cũ, giúp dự án vận hành trôi chảy và minh bạch.</p>
+                </div>
+            </div>
+
+            <!-- PROJECT 5: AI CONTENT CREATION -->
+            <div class="view-section" id="project5">
+                <div class="card">
+                    <h3>Bài tập 5: Ứng dụng AI trong Sáng tạo nội dung số</h3>
+
+                    <div class="project-meta-box">
+                        <div class="meta-row">
+                            <span class="meta-label">🎯 Objective:</span>
+                            <span>Orchestrate a multi-tool AI workflow (ChatGPT for ideation, Midjourney for assets, Canva for layout) to produce high-quality visual infographics while reducing total production time by over 60%.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">📄 Evidence:</span>
+                            <a href="#" class="ref-link">View Workflow Documentation PDF</a>
+                        </div>
+                    </div>
+
+                    <span class="content-heading">1. Tổng quan dự án</span>
+                    <ul>
+                        <li><strong>Sản phẩm:</strong> Infographic tuyên truyền về chủ đề "Ô nhiễm rác thải nhựa".</li>
+                        <li><strong>Mục tiêu:</strong> Sử dụng phối hợp các công cụ AI để rút ngắn quy trình từ ý tưởng đến thành phẩm đồ họa, giảm 60-70% thời gian thực hiện so với phương pháp thủ công.</li>
+                    </ul>
+
+                    <span class="content-heading">2. Quy trình thực hiện (AI Workflow)</span>
+                    
+                    <p><strong>Bước 1: Xây dựng nội dung với ChatGPT</strong><br>Tôi sử dụng ChatGPT để lên dàn ý và viết nội dung cô đọng (Thực trạng, Tác hại, Giải pháp, Thông điệp).</p>
+                    <div class="img-placeholder" style="background: #2b2b2b; color: #fff; height: 150px; border-color: #555;">
+                        <span style="font-size: 30px; margin-bottom: 10px;">💬</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">CHATGPT PROMPT & RESULT</span>
+                        <span style="font-family: 'Space Mono'; opacity: 0.6; font-size: 12px;">(Fact-checked with World Bank)</span>
+                    </div>
+
+                    <p style="margin-top: 20px;"><strong>Bước 2: Tạo nguyên liệu hình ảnh với Midjourney</strong><br>Thay vì tìm ảnh trên mạng, tôi dùng Midjourney để tạo hình minh họa độc quyền. Prompt: <em>"Flat-style infographic illustration... plastic pollution... vector style"</em>.</p>
+                    <div class="img-placeholder" style="height: 250px;">
+                        <span style="font-size: 40px; margin-bottom: 10px;">🐢</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">MIDJOURNEY ART GENERATION</span>
+                        <span style="font-family: 'Space Mono'; opacity: 0.6; font-size: 12px;">(Blue/White color palette)</span>
+                    </div>
+
+                    <p style="margin-top: 20px;"><strong>Bước 3: Thiết kế bố cục với Canva AI</strong><br>Sử dụng tính năng AI của Canva để sắp xếp bố cục và kết hợp nội dung từ ChatGPT với hình ảnh từ Midjourney.</p>
+                    <div class="img-placeholder" style="height: 180px; background: #e8f7f5; color: #006064;">
+                        <span style="font-size: 40px; margin-bottom: 10px;">🎨</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">CANVA LAYOUT DESIGN</span>
+                        <span style="font-family: 'Space Mono'; opacity: 0.6; font-size: 12px;">(Final Assembly)</span>
+                    </div>
+
+                    <span class="content-heading">3. Đánh giá và Bài học kinh nghiệm</span>
+                    <ul>
+                        <li><strong>Sự phối hợp giữa Người và AI:</strong>
+                            <ul>
+                                <li>ChatGPT: Giúp xử lý ngôn ngữ nhanh, nhưng cần <strong>kiểm chứng số liệu</strong>.</li>
+                                <li>Midjourney: Tạo ảnh nghệ thuật, nhưng cần <strong>chỉnh sửa hậu kỳ</strong> để phù hợp phong cách giáo dục.</li>
+                                <li>Canva AI: Hỗ trợ dàn trang, nhưng cần <strong>tinh chỉnh layout</strong> để tránh rối mắt.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Vấn đề đạo đức:</strong> Tôi cam kết minh bạch về việc sử dụng AI trong sản phẩm này. Hình ảnh được tạo mới hoàn toàn để tránh vi phạm bản quyền.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- PROJECT 6: AI ETHICS -->
+            <div class="view-section" id="project6">
+                <div class="card">
+                    <h3>Bài tập 6: Đạo đức và Trách nhiệm khi sử dụng AI</h3>
+
+                    <div class="project-meta-box">
+                        <div class="meta-row">
+                            <span class="meta-label">🎯 Objective:</span>
+                            <span>Formulate a comprehensive personal Code of Ethics and Academic Integrity policy that defines the boundaries of permissible AI assistance, ensuring transparency and preventing plagiarism in university coursework.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">📄 Evidence:</span>
+                            <a href="#" class="ref-link">View Full Ethics Statement PDF</a>
+                        </div>
+                    </div>
+
+                    <span class="content-heading">1. Quan điểm và Chính sách</span>
+                    <p>Dựa trên nghiên cứu về quy định của ĐHQGHN và tham chiếu với các trường đại học quốc tế, tôi xác định quan điểm cốt lõi:</p>
+                    <div class="ethical-quote">
+                        "AI là công cụ hỗ trợ tư duy, không phải là sự thay thế cho năng lực cá nhân."
+                    </div>
+                    <p>Việc sử dụng AI được khuyến khích để gợi ý ý tưởng, sửa lỗi ngữ pháp và tóm tắt tài liệu, nhưng nghiêm cấm các hành vi sao chép nguyên văn mà không trích dẫn hoặc sử dụng AI để làm bài thi.</p>
+
+                    <span class="content-heading">2. Bộ nguyên tắc ứng xử cá nhân (Code of Ethics)</span>
+                    <p>Để đảm bảo tính liêm chính học thuật, tôi cam kết tuân thủ <strong>7 Nguyên tắc vàng</strong> trong suốt quá trình học tập:</p>
+                    <ol style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>Không thay thế:</strong> Không sử dụng AI để thay thế tư duy và sáng tạo cá nhân.</li>
+                        <li><strong>Vai trò hỗ trợ:</strong> Chỉ dùng AI như công cụ hỗ trợ (Co-pilot), không phải người làm bài thay.</li>
+                        <li><strong>Kiểm chứng:</strong> Luôn kiểm tra lại thông tin (Fact-check) bằng nguồn học thuật uy tín.</li>
+                        <li><strong>Minh bạch 100%:</strong> Khai báo rõ ràng việc sử dụng AI trong các bài nộp.</li>
+                        <li><strong>Không sao chép:</strong> Không copy-paste nguyên văn nội dung do AI tạo ra.</li>
+                        <li><strong>Tôn trọng bản quyền:</strong> Tuân thủ chuẩn mực trích dẫn và sở hữu trí tuệ.</li>
+                        <li><strong>Phát triển kỹ năng:</strong> Ưu tiên rèn luyện kỹ năng đọc hiểu, phân tích và tổng hợp của bản thân.</li>
+                    </ol>
+
+                    <span class="content-heading">3. Quy trình thực hành có trách nhiệm</span>
+                    <p>Trong thử nghiệm viết bài luận về chủ đề <em>"Tác động của AI đối với giáo dục"</em>, tôi đã áp dụng quy trình 3 bước để đảm bảo đạo đức:</p>
+                    <ul>
+                        <li><strong>Bước 1 (Gợi ý):</strong> Dùng AI để lên dàn ý và tìm tài liệu tham khảo.</li>
+                        <li><strong>Bước 2 (Kiểm soát):</strong> Loại bỏ các nội dung chung chung, bổ sung bối cảnh thực tế tại Việt Nam mà AI không biết.</li>
+                        <li><strong>Bước 3 (Minh bạch):</strong> Thêm ghi chú trích dẫn ở cuối bài làm: <em>"Ý tưởng ban đầu được hỗ trợ bởi ChatGPT, nội dung cuối cùng do sinh viên biên soạn và chịu trách nhiệm."</em></li>
+                    </ul>
+
+                    <span class="content-heading">4. Sản phẩm truyền thông: Infographic</span>
+                    <p>Dưới đây là Infographic tóm tắt các hành vi Nên và Không nên khi sử dụng AI trong môi trường đại học.</p>
+                    <div class="img-placeholder" style="height: 300px; background: #f0f0f0;">
+                        <span style="font-size: 50px; margin-bottom: 10px;">🛡️</span>
+                        <span style="font-family: 'Space Mono'; font-weight: bold; font-size: 14px;">RESPONSIBLE AI USAGE INFOGRAPHIC</span>
+                        <span style="font-family: 'Space Mono'; opacity: 0.6; font-size: 12px;">(Do's & Don'ts Summary)</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="view-section" id="aboutView"><div class="card"><div class="profile-header"><div class="avatar">👩‍💻</div><div><h2 style="font-weight: 800; font-size: 28px;">Student Name</h2><p style="font-family: 'Space Mono'; opacity: 0.7; font-weight: bold;">Full Stack Developer</p></div></div><p style="font-size: 18px;">I am a Junior CS major passionate about creative code and clean design. I love solving backend logic puzzles and making frontend interfaces snappy and beautiful.</p><h3 style="margin-top: 50px">My Stack</h3><div class="tags"><span class="tag">React</span><span class="tag">Node</span><span class="tag">SQL</span><span class="tag">Figma</span></div><div class="btn-group"><a href="mailto:student@edu.com" class="btn btn-primary">Contact Me</a></div></div></div>
+
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
